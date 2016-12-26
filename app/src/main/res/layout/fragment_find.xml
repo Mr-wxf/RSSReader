@@ -9,15 +9,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#2FAEFF">
-
+        <ImageButton
+            android:id="@+id/ib_QRcode"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/qrcode" />
         <EditText
+            android:layout_toRightOf="@id/ib_QRcode"
             android:id="@+id/et_find_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="40dp"
             android:layout_weight="1"
-            android:hint="请输入RSS地址"
-            />
+            android:hint="请输入RSS地址" />
 
         <ImageButton
             android:id="@+id/ib_clear_item"
@@ -26,6 +30,8 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="40dp"
             android:background="@drawable/clear" />
+
+
 
         <ImageButton
             android:id="@+id/ib_find_item"
@@ -40,17 +46,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.rssreader.wxf.rssreader.rssreader.view.XListView
+        <com.rssreader.wxf.rssreader.rssreader.view.RefreshListView
             android:id="@+id/lv_find_news"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></com.rssreader.wxf.rssreader.rssreader.view.XListView>
+            android:layout_height="match_parent"></com.rssreader.wxf.rssreader.rssreader.view.RefreshListView>
 
         <ProgressBar
-            android:visibility="gone"
             android:id="@+id/pb_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:visibility="gone"
 
             />
     </RelativeLayout>

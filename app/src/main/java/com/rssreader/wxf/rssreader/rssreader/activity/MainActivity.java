@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FrameLayout fl;
     private RadioButton rb_collection;
     private RadioButton rb_find;
+    private int mCurrentFragment = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,34 +37,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     private void initUI() {
         rb_subscribe = (RadioButton) findViewById(R.id.rb_subscribe);
         fl = (FrameLayout) findViewById(R.id.fl);
         rb_collection = (RadioButton) findViewById(R.id.rb_collection);
         rb_find = (RadioButton) findViewById(R.id.rb_find);
         FragmentTransaction subscribeTransaction = getSupportFragmentManager().beginTransaction();
-        subscribeTransaction.replace(R.id.fl,new SubscribeFragment());
+        subscribeTransaction.replace(R.id.fl, new SubscribeFragment());
         subscribeTransaction.commit();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+
             case R.id.rb_subscribe:
+                if (mCurrentFragment == 0) {
+                    return;
+                }
                 FragmentTransaction subscribeTransaction = getSupportFragmentManager().beginTransaction();
-                subscribeTransaction.replace(R.id.fl,new SubscribeFragment());
+                subscribeTransaction.replace(R.id.fl, new SubscribeFragment());
                 subscribeTransaction.commit();
+                mCurrentFragment = 0;
                 break;
             case R.id.rb_collection:
+                if (mCurrentFragment == 1) {
+                    return;
+                }
                 FragmentTransaction collectionTransaction = getSupportFragmentManager().beginTransaction();
-                collectionTransaction.replace(R.id.fl,new CollectionFragment());
+                collectionTransaction.replace(R.id.fl, new CollectionFragment());
                 collectionTransaction.commit();
+                mCurrentFragment = 1;
                 break;
             case R.id.rb_find:
+                if (mCurrentFragment == 2) {
+                    return;
+                }
                 FragmentTransaction findTransaction = getSupportFragmentManager().beginTransaction();
-                findTransaction.replace(R.id.fl,new FindFragment());
+                FindFragment findFragment = new FindFragment();
+                findTransaction.replace(R.id.fl, findFragment);
                 findTransaction.commit();
+                mCurrentFragment = 2;
                 break;
         }
     }
