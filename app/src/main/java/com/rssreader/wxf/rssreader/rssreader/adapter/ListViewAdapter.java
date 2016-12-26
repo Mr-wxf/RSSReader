@@ -58,9 +58,9 @@ public class ListViewAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.tv_title.setText(newsList.get(position).title);
+        holder.tv_title.setText(newsList.get(position).getTitle());
         String substring = "";
-        String description = newsList.get(position).description;
+        String description = newsList.get(position).getDescription();
         if (description.contains("a")) {
             substring = description.trim().substring(description.indexOf("htm>") + 4, description.length() - 4);
         }
@@ -68,7 +68,7 @@ public class ListViewAdapter extends BaseAdapter {
         holder.tv_content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = newsList.get(position).link;
+                String url = newsList.get(position).getLink();
                 Intent intent = new Intent(mContext, WebView.class);
                 intent.putExtra("url", url);
                 mContext.startActivity(intent);

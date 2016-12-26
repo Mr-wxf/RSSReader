@@ -4,7 +4,31 @@ package com.rssreader.wxf.rssreader.rssreader.bean;
  * Created by Administrator on 2016/12/21.
  */
 public class News {
-    public String title;//新闻标题
-    public String link;//新闻链接
-    public String description;//新闻内容
+    private String title;//新闻标题
+    private String link;//新闻链接
+    private String description;//新闻内容
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
