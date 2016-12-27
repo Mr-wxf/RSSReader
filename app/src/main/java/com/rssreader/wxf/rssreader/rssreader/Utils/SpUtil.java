@@ -1,10 +1,9 @@
-package com.rssreader.wxf.rssreader.rssreader.Utils;
+package com.rssreader.wxf.rssreader.rssreader.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.renderscript.Sampler;
 
-import com.rssreader.wxf.rssreader.rssreader.Values.Value;
+import com.rssreader.wxf.rssreader.rssreader.constant.Value;
 
 /**
  * Created by Administrator on 2016/12/21.

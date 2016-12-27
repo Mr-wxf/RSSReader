@@ -1,28 +1,14 @@
-package com.rssreader.wxf.rssreader.rssreader.Utils;
+package com.rssreader.wxf.rssreader.rssreader.utils;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.util.Xml;
-
-import com.android.volley.NetworkResponse;
-import com.android.volley.ParseError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.Volley;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -95,8 +81,10 @@ public class XMLUtil {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-        } catch (InstantiationException e1) {
-            e1.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
         }
         return this.list;
     }

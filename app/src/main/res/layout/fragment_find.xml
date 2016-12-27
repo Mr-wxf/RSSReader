@@ -13,6 +13,7 @@
             android:id="@+id/ib_QRcode"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_marginLeft="5dp"
             android:background="@drawable/qrcode" />
         <EditText
             android:layout_toRightOf="@id/ib_QRcode"
@@ -30,8 +31,6 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="40dp"
             android:background="@drawable/clear" />
-
-
 
         <ImageButton
             android:id="@+id/ib_find_item"
@@ -60,6 +59,5 @@
 
             />
     </RelativeLayout>
-
 
 </LinearLayout>

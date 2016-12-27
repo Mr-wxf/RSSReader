@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.rssreader.wxf.rssreader.R;
-import com.rssreader.wxf.rssreader.rssreader.Utils.SpUtil;
-import com.rssreader.wxf.rssreader.rssreader.Values.Value;
+import com.rssreader.wxf.rssreader.rssreader.utils.SpUtil;
+import com.rssreader.wxf.rssreader.rssreader.constant.Value;
 import com.rssreader.wxf.rssreader.rssreader.adapter.ViewPagerAdapter;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class GuideActivity extends AppCompatActivity {
         this.mContext = this;
         boolean result = SpUtil.getBoolean(mContext, Value.isFirstUseApp);
         if (result) {
-            startActivity(new Intent(mContext, MainActivity.class));
+            startActivity(new Intent(mContext, WelcomeActivity.class));
             finish();
         }
         initUI();
@@ -49,7 +49,7 @@ public class GuideActivity extends AppCompatActivity {
                     bt_now_use.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startActivity(new Intent(mContext, MainActivity.class));
+                            startActivity(new Intent(mContext, WelcomeActivity.class));
                             SpUtil.putBoolean(mContext, true);
                             finish();
                         }

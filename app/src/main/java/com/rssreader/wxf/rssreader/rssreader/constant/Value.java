@@ -1,4 +1,4 @@
-package com.rssreader.wxf.rssreader.rssreader.Values;
+package com.rssreader.wxf.rssreader.rssreader.constant;
 
 /**
  * Created by Administrator on 2016/12/21.

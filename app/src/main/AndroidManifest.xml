@@ -3,7 +3,12 @@
     package="com.rssreader.wxf.rssreader">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <uses-permission android:name="android.permission.LOCATION_HARDWARE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,7 +23,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".rssreader.activity.MainActivity" />
-        <activity android:name=".rssreader.activity.WebView"></activity>
+        <activity android:name=".rssreader.activity.WebView" />
+        <activity android:name=".rssreader.activity.WelcomeActivity"></activity>
+        <activity
+            android:configChanges="orientation|keyboardHidden"
+            android:name=".rssreader.zxing.activity.CaptureActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
     </application>
 
 </manifest>
