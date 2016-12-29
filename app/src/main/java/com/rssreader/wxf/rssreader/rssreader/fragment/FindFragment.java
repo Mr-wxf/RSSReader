@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.support.v7.widget.ActionBarOverlayLayout;
 import android.support.v7.widget.ListPopupWindow;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,9 +21,9 @@ import android.widget.Toast;
 
 import com.rssreader.wxf.rssreader.R;
 import com.rssreader.wxf.rssreader.rssreader.adapter.ListPopupWindowAdapter;
-import com.rssreader.wxf.rssreader.rssreader.adapter.ListViewAdapter;
+import com.rssreader.wxf.rssreader.rssreader.adapter.FindListViewAdapter;
 import com.rssreader.wxf.rssreader.rssreader.bean.News;
-import com.rssreader.wxf.rssreader.rssreader.database.HistoryRecordDao;
+import com.rssreader.wxf.rssreader.rssreader.database.NewsDao;
 import com.rssreader.wxf.rssreader.rssreader.utils.XMLUtil;
 import com.rssreader.wxf.rssreader.rssreader.view.RefreshListView;
 import com.rssreader.wxf.rssreader.rssreader.zxing.activity.CaptureActivity;
@@ -44,13 +41,13 @@ public class FindFragment extends Fragment implements View.OnClickListener, Refr
     private ImageButton ib_find_item;
     private ArrayList<News> newsList;
     private static int start = 0;
-    private ListViewAdapter listViewAdapter;
+    private FindListViewAdapter findListViewAdapter;
     private ArrayList<News> nowNewsList;
     private ProgressBar pb_loading;
     private XMLUtil xmlUtil;
     private ImageButton ib_qRcode;
     private ListPopupWindow mListPopupWindow;
-    private HistoryRecordDao historyRecordDao;
+    private NewsDao newsDao;
     private ListPopupWindowAdapter listPopupWindowAdapter;
     private Handler handler = new Handler() {
         @Override
@@ -87,7 +84,7 @@ public class FindFragment extends Fragment implements View.OnClickListener, Refr
                     tv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            historyRecordDao.delAllHistoryRecord();
+                            newsDao.delAllHistoryRecord();
                             stringArrayList.clear();
                             listPopupWindowAdapter.notifyDataSetChanged();
                         }
@@ -103,7 +100,7 @@ public class FindFragment extends Fragment implements View.OnClickListener, Refr
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        historyRecordDao = new HistoryRecordDao(getContext());
+        newsDao = new NewsDao(getContext());
     }
 
     @Override
@@ -136,7 +133,7 @@ public class FindFragment extends Fragment implements View.OnClickListener, Refr
                 nowNewsList = new ArrayList<>();
                 newsList = new ArrayList<>();
                 xmlUtil = new XMLUtil(getContext());
-                historyRecordDao.addHistoryRecord(et_find_item.getText().toString().trim());//添加历史记录数据库
+                newsDao.addHistoryRecord(et_find_item.getText().toString().trim());//添加历史记录数据库
                 loadData();
                 pb_loading.setVisibility(View.VISIBLE);
                 break;
@@ -151,7 +148,7 @@ public class FindFragment extends Fragment implements View.OnClickListener, Refr
                 new Thread() {
                     @Override
                     public void run() {
-                        ArrayList<String> stringArrayList = historyRecordDao.queryAllHistoryRecord();
+                        ArrayList<String> stringArrayList = newsDao.queryAllHistoryRecord();
                         Message msg = new Message();
                         msg.obj = stringArrayList;
                         msg.what = 1;
@@ -177,6 +174,7 @@ public class FindFragment extends Fragment implements View.OnClickListener, Refr
                 if (et_find_item.getText().toString().trim() != null && xmlUtil != null) {
                     InputStream in = xmlUtil.send(et_find_item.getText().toString().trim());
                     ArrayList<Object> objects = xmlUtil.getData(in, "UTF-8", News.class, fields, elements, "item");
+
                     for (int i = 0; i < objects.size(); i++) {
                         News news = (News) objects.get(i);
                         newsList.add(news);
@@ -202,12 +200,12 @@ public class FindFragment extends Fragment implements View.OnClickListener, Refr
             }
         }
         if (nowNewsList != null && nowNewsList.size() > 0) {
-            listViewAdapter = new ListViewAdapter(nowNewsList, getContext());
-            if (listViewAdapter != null) {
-                listViewAdapter.notifyDataSetChanged();
+            findListViewAdapter = new FindListViewAdapter(nowNewsList, getContext());
+            if (findListViewAdapter != null) {
+                findListViewAdapter.notifyDataSetChanged();
                 lv_find_news.setOnRefresh();
             }
-            lv_find_news.setAdapter(listViewAdapter);
+            lv_find_news.setAdapter(findListViewAdapter);
 
         }
         lv_find_news.setOnRefresh();
@@ -240,7 +238,7 @@ public class FindFragment extends Fragment implements View.OnClickListener, Refr
 
                 }
                 if (nowNewsList != null) {
-                    listViewAdapter = new ListViewAdapter(nowNewsList, getContext());
+                    findListViewAdapter = new FindListViewAdapter(nowNewsList, getContext());
                     lv_find_news.setOnRefresh();
                 }
             }

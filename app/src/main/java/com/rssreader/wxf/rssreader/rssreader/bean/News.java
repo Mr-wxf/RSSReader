@@ -7,6 +7,16 @@ public class News {
     private String title;//新闻标题
     private String link;//新闻链接
     private String description;//新闻内容
+    private String date;
+    public boolean isState() {
+        return state;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
+    }
+
+    private boolean state;
 
     public String getTitle() {
         return title;
@@ -30,5 +40,13 @@ public class News {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

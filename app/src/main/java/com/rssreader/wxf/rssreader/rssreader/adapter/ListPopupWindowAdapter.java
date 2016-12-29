@@ -1,17 +1,15 @@
 package com.rssreader.wxf.rssreader.rssreader.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.rssreader.wxf.rssreader.R;
-import com.rssreader.wxf.rssreader.rssreader.database.HistoryRecordDao;
+import com.rssreader.wxf.rssreader.rssreader.database.NewsDao;
 
 import java.util.ArrayList;
 
@@ -58,8 +56,8 @@ public class ListPopupWindowAdapter extends BaseAdapter {
         holder.bt_del_history_record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HistoryRecordDao historyRecordDao = new HistoryRecordDao(mContext);
-                historyRecordDao.delHistoryRecord(stringArrayList.get(position));
+                NewsDao newsDao = new NewsDao(mContext);
+                newsDao.delHistoryRecord(stringArrayList.get(position));
                 stringArrayList.remove(position);
                 notifyDataSetChanged();
             }

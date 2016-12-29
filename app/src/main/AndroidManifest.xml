@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".rssreader.activity.MainActivity" />
-        <activity android:name=".rssreader.activity.WebView" />
+        <activity android:name=".rssreader.activity.WebViewActivity" />
         <activity android:name=".rssreader.activity.WelcomeActivity"></activity>
         <activity
             android:configChanges="orientation|keyboardHidden"

@@ -5,15 +5,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.rssreader.wxf.rssreader.R;
 import com.rssreader.wxf.rssreader.rssreader.fragment.CollectionFragment;
 import com.rssreader.wxf.rssreader.rssreader.fragment.FindFragment;
 import com.rssreader.wxf.rssreader.rssreader.fragment.SubscribeFragment;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -81,4 +84,64 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
+    /*
+    * 程序结束后清除缓存
+    * */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        clearWebViewCache();
+    }
+
+    /**
+     * 清除WebView缓存
+     */
+    public void clearWebViewCache() {
+
+        //清理Webview缓存数据库
+        try {
+            deleteDatabase("webview.db");
+            deleteDatabase("webviewCache.db");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //WebView 缓存文件
+        File appCacheDir = new File(getFilesDir().getAbsolutePath() + "/webcache");
+        Log.e("ondestory", "appCacheDir path=" + appCacheDir.getAbsolutePath());
+
+        File webviewCacheDir = new File(getCacheDir().getAbsolutePath() + "/webviewCache");
+        Log.e("ondestory", "webviewCacheDir path=" + webviewCacheDir.getAbsolutePath());
+
+        //删除webview 缓存目录
+        if (webviewCacheDir.exists()) {
+            deleteFile(webviewCacheDir);
+        }
+        //删除webview 缓存 缓存目录
+        if (appCacheDir.exists()) {
+            deleteFile(appCacheDir);
+        }
+    }
+
+    /**
+     * 递归删除 文件/文件夹
+     *
+     * @param file
+     */
+    public void deleteFile(File file) {
+
+        if (file.exists()) {
+            if (file.isFile()) {
+                file.delete();
+            } else if (file.isDirectory()) {
+                File files[] = file.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                    deleteFile(files[i]);
+                }
+            }
+            file.delete();
+        }
+    }
+
 }
