@@ -79,7 +79,7 @@ public class FindFragment extends Fragment implements View.OnClickListener, Refr
                     tv.setTextSize(20);
                     tv.setText("清空历史记录");
                     tv.setGravity(Gravity.CENTER);
-                    tv.setPadding(0,20,0,20);
+                    tv.setPadding(0, 20, 0, 20);
                     lv.addFooterView(tv);
                     tv.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -101,6 +101,9 @@ public class FindFragment extends Fragment implements View.OnClickListener, Refr
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         newsDao = new NewsDao(getContext());
+        nowNewsList = new ArrayList<>();
+        newsList = new ArrayList<>();
+        xmlUtil = new XMLUtil(getContext());
     }
 
     @Override
@@ -130,9 +133,6 @@ public class FindFragment extends Fragment implements View.OnClickListener, Refr
                     Toast.makeText(getContext(), "请输入RSS", Toast.LENGTH_SHORT).show();
                     break;
                 }
-                nowNewsList = new ArrayList<>();
-                newsList = new ArrayList<>();
-                xmlUtil = new XMLUtil(getContext());
                 newsDao.addHistoryRecord(et_find_item.getText().toString().trim());//添加历史记录数据库
                 loadData();
                 pb_loading.setVisibility(View.VISIBLE);
@@ -171,6 +171,7 @@ public class FindFragment extends Fragment implements View.OnClickListener, Refr
         new Thread() {
             @Override
             public void run() {
+                newsList.clear();
                 if (et_find_item.getText().toString().trim() != null && xmlUtil != null) {
                     InputStream in = xmlUtil.send(et_find_item.getText().toString().trim());
                     ArrayList<Object> objects = xmlUtil.getData(in, "UTF-8", News.class, fields, elements, "item");
@@ -192,7 +193,7 @@ public class FindFragment extends Fragment implements View.OnClickListener, Refr
         if (newsList != null && newsList.size() > 0) {
             nowNewsList.clear();
             for (int i = 0; i < 10; i++) {
-                if (start >= newsList.size() - 1) {
+                if (start >= newsList.size()) {
                     start = 0;
                 }
                 nowNewsList.add(newsList.get(start));
@@ -200,11 +201,12 @@ public class FindFragment extends Fragment implements View.OnClickListener, Refr
             }
         }
         if (nowNewsList != null && nowNewsList.size() > 0) {
-            findListViewAdapter = new FindListViewAdapter(nowNewsList, getContext());
-            if (findListViewAdapter != null) {
+            ArrayList<News> newsCollectionList = newsDao.queryAllCollection();
+            findListViewAdapter = new FindListViewAdapter(nowNewsList, newsCollectionList, getContext());
+
                 findListViewAdapter.notifyDataSetChanged();
                 lv_find_news.setOnRefresh();
-            }
+
             lv_find_news.setAdapter(findListViewAdapter);
 
         }
@@ -224,7 +226,15 @@ public class FindFragment extends Fragment implements View.OnClickListener, Refr
     //加载更多
     @Override
     public void LoadMore() {
+        if (nowNewsList.size() >= newsList.size()) {
+            ArrayList<News> newsCollectionList = newsDao.queryAllCollection();
+            findListViewAdapter.setNewsCollectionList(newsCollectionList);
+            findListViewAdapter.notifyDataSetChanged();
+            lv_find_news.setOnRefresh();
+            return;
+        }
         handler.postDelayed(new Runnable() {
+            ArrayList<News> newsCollectionList = newsDao.queryAllCollection();
             @Override
             public void run() {
                 for (int i = 0; i < 10; i++) {
@@ -233,15 +243,33 @@ public class FindFragment extends Fragment implements View.OnClickListener, Refr
                     }
                     if (newsList != null && newsList.size() > 0) {
                         nowNewsList.add(newsList.get(start));
+                        if (nowNewsList.size() >= newsList.size()) {
+
+                            findListViewAdapter.setNewsCollectionList(newsCollectionList);
+                            findListViewAdapter.notifyDataSetChanged();
+                            lv_find_news.setOnRefresh();
+                            return;
+                        }
                         start++;
                     }
+                    if (nowNewsList.size() >= newsList.size()) {
+                        lv_find_news.setOnRefresh();
+                        return;
+                    }
+                }
 
-                }
-                if (nowNewsList != null) {
-                    findListViewAdapter = new FindListViewAdapter(nowNewsList, getContext());
-                    lv_find_news.setOnRefresh();
-                }
+//                if (nowNewsList != null) {
+//                    ArrayList<News> newsCollectionList = newsDao.queryAllCollection();
+//                    findListViewAdapter = new FindListViewAdapter(nowNewsList, newsCollectionList, getContext());
+//                    findListViewAdapter.notifyDataSetChanged();
+//                    lv_find_news.setOnRefresh();
+//                }
+                ArrayList<News> newsCollectionList = newsDao.queryAllCollection();
+                findListViewAdapter.setNewsCollectionList(newsCollectionList);
+                findListViewAdapter.notifyDataSetChanged();
+                lv_find_news.setOnRefresh();
             }
+
         }, 1500);
     }
 

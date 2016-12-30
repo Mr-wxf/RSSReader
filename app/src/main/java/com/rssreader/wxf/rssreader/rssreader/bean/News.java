@@ -1,5 +1,7 @@
 package com.rssreader.wxf.rssreader.rssreader.bean;
 
+import android.widget.ImageView;
+
 /**
  * Created by Administrator on 2016/12/21.
  */
@@ -8,6 +10,16 @@ public class News {
     private String link;//新闻链接
     private String description;//新闻内容
     private String date;
+    private ImageView imageView;
+
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    public void setImageView(ImageView imageView) {
+        this.imageView = imageView;
+    }
+
     public boolean isState() {
         return state;
     }

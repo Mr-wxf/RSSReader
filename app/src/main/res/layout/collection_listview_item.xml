@@ -3,9 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:clickable="true"
-    android:paddingBottom="1dp">
+    android:id="@+id/sml"
+    >
 
     <LinearLayout
+        android:id="@+id/ll_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
